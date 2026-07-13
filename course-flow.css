@@ -1,0 +1,149 @@
+.course-map {
+  margin-bottom: 74px;
+}
+
+.course-map-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 15px;
+}
+
+.course-map-head h3 {
+  margin: 4px 0 0;
+  font-size: 22px;
+  letter-spacing: -.025em;
+}
+
+.course-map-head p {
+  max-width: 380px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.map-kicker {
+  color: var(--violet);
+  font: 500 9px DM Mono, monospace;
+  letter-spacing: .13em;
+}
+
+.course-axis {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font: 500 9px DM Mono, monospace;
+  letter-spacing: .09em;
+}
+
+.course-axis i {
+  height: 1px;
+  background: var(--line);
+  position: relative;
+}
+
+.course-axis i::after {
+  content: "›";
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translateY(-54%);
+  color: var(--violet);
+  font-size: 17px;
+}
+
+.phase-track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.phase-track div {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  border-top: 2px solid var(--line);
+  padding: 8px 4px 0;
+}
+
+.phase-track div:nth-child(1) { border-color: var(--acid); }
+.phase-track div:nth-child(2) { border-color: var(--violet); }
+.phase-track div:nth-child(3) { border-color: var(--blue); }
+.phase-track span,.phase-track small { color: var(--muted); font: 500 8px DM Mono, monospace; }
+.phase-track b { font-size: 11px; }
+
+.course-map .module-grid {
+  position: relative;
+  padding-bottom: 0;
+}
+
+.course-map .module-card {
+  appearance: none;
+  width: 100%;
+  color: var(--ink);
+  text-decoration: none;
+  text-align: left;
+  font-family: inherit;
+  overflow: visible;
+}
+
+.course-map .module-card::after {
+  content: "→";
+  position: absolute;
+  z-index: 3;
+  right: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--muted);
+  font: 500 11px DM Mono, monospace;
+}
+
+.course-map .module-card:last-child::after { display: none; }
+.course-map .module-card.is-active { border-color: var(--violet); box-shadow: 0 0 0 2px color-mix(in srgb,var(--violet) 25%,transparent); transform: translateY(-4px); }
+.course-map .module-card:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
+.module-phase { display: none; color: var(--violet); font: 500 8px DM Mono, monospace; letter-spacing: .1em; }
+.module-output { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; color: var(--muted); font: 500 9px DM Mono, monospace; text-transform: uppercase; letter-spacing: .06em; }
+.module-output i { color: var(--violet); font-style: normal; }
+
+.course-destination {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-top: 13px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--acid);
+  background: var(--card);
+  padding: 12px 16px;
+  border-radius: 10px;
+}
+
+.course-destination span { color: var(--violet); font: 500 9px DM Mono, monospace; letter-spacing: .12em; }
+.course-destination b { font-size: 12px; }
+.course-destination small { color: var(--muted); font-size: 10px; text-align: right; }
+
+@media (max-width: 900px) {
+  .course-map-head { align-items: start; flex-direction: column; gap: 7px; }
+  .phase-track { display: none; }
+  .course-axis { grid-template-columns: 1fr; gap: 5px; }
+  .course-axis i { display: none; }
+  .course-axis span:last-child { display: none; }
+  .course-map .module-grid { grid-template-columns: 1fr; gap: 18px; }
+  .course-map .module-card { min-height: 155px; }
+  .course-map .module-card::after { content: "↓"; right: 50%; top: auto; bottom: -18px; transform: translateX(50%); }
+  .module-phase { display: block; margin-top: 7px; }
+  .course-destination { grid-template-columns: 1fr; gap: 3px; }
+  .course-destination small { text-align: left; }
+}

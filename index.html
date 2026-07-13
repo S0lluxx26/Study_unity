@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="learning.css">
   <link rel="stylesheet" href="mcq.css?v=1">
   <link rel="stylesheet" href="compact-learning.css?v=1">
+  <link rel="stylesheet" href="course-flow.css?v=1">
   <link rel="stylesheet" href="dark-mode.css?v=1">
 </head>
 <body>
@@ -97,7 +98,20 @@
       <p>Follow the sequence or jump to what you need. Each module combines a mental model, an Editor task, production-ready C#, and a checkpoint.</p>
     </section>
 
-    <section class="module-grid section-shell" id="moduleGrid" aria-label="Course modules"></section>
+    <section class="course-map section-shell reveal" aria-labelledby="courseMapTitle">
+      <div class="course-map-head">
+        <div><span class="map-kicker">COURSE FLOW</span><h3 id="courseMapTitle">From blank scene to shipped prototype</h3></div>
+        <p>Select any connected module to open its learning material.</p>
+      </div>
+      <div class="course-axis" aria-hidden="true"><span>START · BLANK SCENE</span><i></i><span>FINISH · WEB BUILD</span></div>
+      <div class="phase-track" aria-label="Course phases">
+        <div><span>PHASE 01</span><b>Foundation</b><small>Modules 01–02</small></div>
+        <div><span>PHASE 02</span><b>Playable loop</b><small>Modules 03–04</small></div>
+        <div><span>PHASE 03</span><b>Polish &amp; release</b><small>Modules 05–06</small></div>
+      </div>
+      <div class="module-grid" id="moduleGrid" aria-label="Six connected course modules"></div>
+      <div class="course-destination"><span>CAPSTONE</span><b>One complete, playable prototype</b><small>Controls → goal → feedback → win state → tested Web build</small></div>
+    </section>
 
     <section class="course-explorer section-shell reveal" id="course">
       <div class="course-heading">
@@ -202,7 +216,7 @@
   <footer>
     <div class="section-shell"><div class="brand"><span class="brand-mark">U</span><span>UNITY <b>LAUNCHPAD</b></span></div><p>An independent study guide. Unity is a trademark of Unity Technologies.</p><a href="#top">Back to top ↑</a></div>
   </footer>
-  <script src="app.js?v=5"></script>
-  <script src="learning.js?v=3"></script>
+  <script src="app.js?v=6"></script>
+  <script src="learning.js?v=4"></script>
 </body>
 </html>

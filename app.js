@@ -1,12 +1,12 @@
 const modules=[
-  {n:'01',icon:'⌘',title:'Editor & scene thinking',desc:'Navigate the Editor, compose GameObjects, and save a clean first scene.',time:'45 MIN'},
-  {n:'02',icon:'{ }',title:'C# for gameplay',desc:'Use components, fields, methods, references, and the MonoBehaviour lifecycle.',time:'75 MIN'},
-  {n:'03',icon:'↗',title:'Input & movement',desc:'Create action-based controls and a physics-driven player controller.',time:'60 MIN'},
-  {n:'04',icon:'◉',title:'Physics & interactions',desc:'Build collisions, triggers, collectibles, hazards, and win conditions.',time:'70 MIN'},
-  {n:'05',icon:'▦',title:'UI, audio & polish',desc:'Communicate game state with interfaces, feedback, sound, and particles.',time:'60 MIN'},
-  {n:'06',icon:'△',title:'Profile, build & ship',desc:'Measure performance, create a Web build, test, and publish your game.',time:'50 MIN'}
+  {n:'01',icon:'⌘',phase:'FOUNDATION',title:'Editor & scene thinking',desc:'Navigate the Editor, compose GameObjects, and save a clean first scene.',output:'Scene ready',time:'45 MIN'},
+  {n:'02',icon:'{ }',phase:'FOUNDATION',title:'C# for gameplay',desc:'Use components, fields, methods, references, and the MonoBehaviour lifecycle.',output:'Behavior scripted',time:'75 MIN'},
+  {n:'03',icon:'↗',phase:'PLAYABLE LOOP',title:'Input & movement',desc:'Create action-based controls and a physics-driven player controller.',output:'Player moves',time:'60 MIN'},
+  {n:'04',icon:'◉',phase:'PLAYABLE LOOP',title:'Physics & interactions',desc:'Build collisions, triggers, collectibles, hazards, and win conditions.',output:'Game loop works',time:'70 MIN'},
+  {n:'05',icon:'▦',phase:'RELEASE',title:'UI, audio & polish',desc:'Communicate game state with interfaces, feedback, sound, and particles.',output:'Game feels clear',time:'60 MIN'},
+  {n:'06',icon:'△',phase:'RELEASE',title:'Profile, build & ship',desc:'Measure performance, create a Web build, test, and publish your game.',output:'Build is live',time:'50 MIN'}
 ];
-document.querySelector('#moduleGrid').innerHTML=modules.map(m=>`<article class="module-card reveal"><div class="module-top"><span>MODULE ${m.n}</span><span>${m.time}</span></div><div class="module-icon">${m.icon}</div><h3>${m.title}</h3><p>${m.desc}</p></article>`).join('');
+document.querySelector('#moduleGrid').innerHTML=modules.map((m,i)=>`<a href="#module-${m.n}" class="module-card" id="module-${m.n}" data-module-index="${i}" aria-label="Open module ${Number(m.n)}: ${m.title}"><div class="module-top"><span>MODULE ${m.n}</span><span>${m.time}</span></div><span class="module-phase">${m.phase}</span><div class="module-icon" aria-hidden="true">${m.icon}</div><h3>${m.title}</h3><p>${m.desc}</p><span class="module-output">${m.output} <i>→</i></span></a>`).join('');
 
 const challenges=[
  {title:'Find a component',prompt:'Which method caches the Rigidbody already attached to this GameObject?',code:'private Rigidbody body;\n\nvoid Awake()\n{\n    body = ___<Rigidbody>();\n}',choices:['FindComponent','GetComponent','AddComponent','TryGetComponent'],answer:1,explanations:['FindComponent is not a Unity API method.','Correct. GetComponent<T>() returns an existing component of type T on the same GameObject. Caching it in Awake avoids searching for it every physics step.','AddComponent<T>() creates a new component; it does not find the Rigidbody already attached.','TryGetComponent requires an out parameter, so it does not fit this expression.']},

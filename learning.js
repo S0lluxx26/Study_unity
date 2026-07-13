@@ -105,6 +105,8 @@ const glossaryTerms = [
 const lessonState = new Set(JSON.parse(localStorage.getItem('unityLessonProgress') || '[]'));
 const lessonCheckState = new Set(JSON.parse(localStorage.getItem('unityLessonChecks') || '[]'));
 let activeLesson = Math.min(lessonModules.length - 1, lessonModules.findIndex((_, i) => !lessonState.has(i)) === -1 ? lessonModules.length - 1 : lessonModules.findIndex((_, i) => !lessonState.has(i)));
+const linkedModule = location.hash.match(/^#module-(0[1-6])$/);
+if (linkedModule) activeLesson = Number(linkedModule[1]) - 1;
 const setupState = new Set(JSON.parse(localStorage.getItem('unitySetupProgress') || '[]'));
 
 function saveLearningState() {
@@ -125,14 +127,22 @@ function renderDashboard() {
   const nextIndex = next === -1 ? 5 : next;
   document.querySelector('#continueTitle').textContent = next === -1 ? 'Build your second prototype' : lessonModules[nextIndex].title;
   document.querySelector('#continueText').textContent = next === -1 ? 'Repeat the loop with one new mechanic and a smaller scope.' : lessonModules[nextIndex].outcome;
-  document.querySelector('#continueButton').onclick = () => { activeLesson = nextIndex; renderCourse(); };
-  document.querySelectorAll('.module-card').forEach((card, i) => card.classList.toggle('is-complete', lessonState.has(i)));
+  document.querySelector('#continueButton').onclick = () => openLesson(nextIndex);
+  document.querySelectorAll('.module-card').forEach((card, i) => {card.classList.toggle('is-complete', lessonState.has(i));card.classList.toggle('is-active', i === activeLesson);card.setAttribute('aria-current',i===activeLesson?'step':'false')});
+}
+
+function openLesson(index, scroll = true) {
+  activeLesson = Math.max(0, Math.min(lessonModules.length - 1, index));
+  history.replaceState(null, '', `${location.pathname}${location.search}#module-${String(activeLesson + 1).padStart(2,'0')}`);
+  renderCourse();
+  renderDashboard();
+  if (scroll) requestAnimationFrame(() => document.querySelector('#course').scrollIntoView({behavior:'smooth',block:'start'}));
 }
 
 function renderCourse() {
   const index = document.querySelector('#lessonIndex');
   index.innerHTML = lessonModules.map((m, i) => `<button class="lesson-index-button ${i === activeLesson ? 'active' : ''}" data-lesson="${i}"><span class="index-number">${String(i + 1).padStart(2,'0')}</span><span><strong>${m.title}</strong><small>${m.time}</small></span><span class="complete-mark">${lessonState.has(i) ? '✓' : ''}</span></button>`).join('');
-  index.querySelectorAll('button').forEach(button => button.onclick = () => { activeLesson = Number(button.dataset.lesson); renderCourse(); });
+  index.querySelectorAll('button').forEach(button => button.onclick = () => openLesson(Number(button.dataset.lesson)));
   const m = lessonModules[activeLesson];
   document.querySelector('#lessonView').innerHTML = `
     <div class="lesson-view-top"><div><span class="lesson-kicker">MODULE ${String(activeLesson + 1).padStart(2,'0')} · LEARNING OUTCOME</span><h3>${m.title}</h3><p class="lesson-outcome">${m.outcome}</p></div><span class="lesson-time">${m.time}</span></div>
@@ -174,8 +184,7 @@ document.querySelectorAll('[data-setup]').forEach(input => {
 document.querySelector('#setupCount').textContent = `${setupState.size} / 4`;
 document.querySelector('#glossarySearch').addEventListener('input', event => renderGlossary(event.target.value));
 document.querySelectorAll('.module-card').forEach((card, i) => {
-  card.tabIndex = 0; card.setAttribute('role','button'); card.setAttribute('aria-label',`Open module ${i+1}: ${lessonModules[i].title}`);
-  const open = () => { activeLesson = i; renderCourse(); document.querySelector('#course').scrollIntoView({behavior:'smooth'}); };
-  card.onclick = open; card.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); } };
+  card.onclick = event => { event.preventDefault(); openLesson(i); };
 });
 renderCourse(); renderDashboard(); renderGlossary();
+if (linkedModule) requestAnimationFrame(() => document.querySelector('#course').scrollIntoView({block:'start'}));

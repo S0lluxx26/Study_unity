@@ -12,6 +12,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="responsive-fixes.css">
+  <link rel="stylesheet" href="learning.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -21,8 +22,9 @@
       <span>UNITY <b>LAUNCHPAD</b></span>
     </a>
     <nav aria-label="Primary navigation">
+      <a href="#dashboard">Dashboard</a>
       <a href="#roadmap">Roadmap</a>
-      <a href="#lesson">Lessons</a>
+      <a href="#course">Lessons</a>
       <a href="#lab">Code lab</a>
       <a href="#quiz">Quiz</a>
     </nav>
@@ -63,6 +65,26 @@
 
     <section class="ticker" aria-label="Topics covered"><div>GAMEOBJECTS <i>✦</i> C# SCRIPTING <i>✦</i> PHYSICS <i>✦</i> INPUT SYSTEM <i>✦</i> UI TOOLKIT <i>✦</i> WEB BUILDS <i>✦</i> GAMEOBJECTS <i>✦</i> C# SCRIPTING</div></section>
 
+    <section class="learning-dashboard section-shell reveal" id="dashboard">
+      <div class="dash-progress-card">
+        <div class="progress-ring" id="progressRing" aria-label="Course progress"><span id="progressPercent">0%</span></div>
+        <div><p class="eyebrow">YOUR PROGRESS</p><h2 id="progressMessage">Ready when you are.</h2><p id="progressDetail">Complete setup, then begin Module 01.</p></div>
+      </div>
+      <div class="continue-card">
+        <span class="dash-label">UP NEXT</span>
+        <h3 id="continueTitle">Editor &amp; scene thinking</h3>
+        <p id="continueText">Learn the five Editor windows and create a clean first scene.</p>
+        <a class="button primary" id="continueButton" href="#course">Continue learning →</a>
+      </div>
+      <div class="setup-card">
+        <div class="setup-head"><div><span class="dash-label">BEFORE YOU START</span><h3>Quick setup</h3></div><span id="setupCount">0 / 4</span></div>
+        <label><input type="checkbox" data-setup="hub"> Install Unity Hub</label>
+        <label><input type="checkbox" data-setup="editor"> Install a Unity 6 Editor</label>
+        <label><input type="checkbox" data-setup="ide"> Install Visual Studio or VS Code</label>
+        <label><input type="checkbox" data-setup="project"> Create a 3D Core project</label>
+      </div>
+    </section>
+
     <section class="section-shell intro reveal" id="roadmap">
       <div>
         <p class="eyebrow">YOUR BUILD PATH</p>
@@ -72,6 +94,17 @@
     </section>
 
     <section class="module-grid section-shell" id="moduleGrid" aria-label="Course modules"></section>
+
+    <section class="course-explorer section-shell reveal" id="course">
+      <div class="course-heading">
+        <div><p class="eyebrow">GUIDED CURRICULUM</p><h2>Learn in small, buildable steps.</h2></div>
+        <p>Each module tells you what to understand, what to do in Unity, and how to prove it works. Your completion state stays on this device.</p>
+      </div>
+      <div class="course-layout">
+        <aside class="course-index" aria-label="Lesson navigation" id="lessonIndex"></aside>
+        <article class="lesson-view" id="lessonView" aria-live="polite"></article>
+      </div>
+    </section>
 
     <section class="lesson-section" id="lesson">
       <div class="section-shell lesson-shell">
@@ -180,6 +213,28 @@
       </form>
     </section>
 
+    <section class="reference-hub section-shell reveal" id="glossary">
+      <div class="reference-heading">
+        <div><p class="eyebrow">REFERENCE DESK</p><h2>Look it up. Get unstuck.</h2></div>
+        <label class="search-box" for="glossarySearch"><span>⌕</span><input id="glossarySearch" type="search" placeholder="Search Rigidbody, Prefab, Update…" autocomplete="off"></label>
+      </div>
+      <div class="reference-layout">
+        <div>
+          <div class="reference-subhead"><h3>Unity glossary</h3><span id="glossaryCount">20 terms</span></div>
+          <div class="glossary-grid" id="glossaryGrid"></div>
+        </div>
+        <aside class="troubleshooting">
+          <p class="eyebrow">COMMON BLOCKERS</p>
+          <h3>Fix the first five problems.</h3>
+          <details><summary>My script does not appear in Add Component</summary><p>Fix every red Console error first. Confirm the file name matches the public class name and that the class inherits MonoBehaviour.</p></details>
+          <details><summary>My player falls through the floor</summary><p>Give the player a Rigidbody and Collider. Give the floor a Collider. Confirm neither Collider is accidentally set as a trigger.</p></details>
+          <details><summary>Input does nothing</summary><p>Confirm the Input System package is installed, the action map is enabled, PlayerInput references the action asset, and the callback name matches the action.</p></details>
+          <details><summary>Everything moves at a different speed</summary><p>Scale frame-based movement by Time.deltaTime. Apply Rigidbody forces in FixedUpdate rather than Update.</p></details>
+          <details><summary>The Web build opens to a blank page</summary><p>Test with Build and Run or a local web server—not by double-clicking the HTML file. Then inspect the browser console and server compression headers.</p></details>
+        </aside>
+      </div>
+    </section>
+
     <section class="sources section-shell reveal">
       <div><p class="eyebrow">KEEP LEARNING</p><h2>Primary sources, not shortcuts.</h2></div>
       <div class="source-links">
@@ -195,5 +250,6 @@
     <div class="section-shell"><div class="brand"><span class="brand-mark">U</span><span>UNITY <b>LAUNCHPAD</b></span></div><p>An independent study guide. Unity is a trademark of Unity Technologies.</p><a href="#top">Back to top ↑</a></div>
   </footer>
   <script src="app.js"></script>
+  <script src="learning.js"></script>
 </body>
 </html>

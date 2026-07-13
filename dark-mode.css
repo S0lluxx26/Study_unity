@@ -1,0 +1,139 @@
+body.dark {
+  color-scheme: dark;
+  --paper: #090e16;
+  --card: #151c27;
+  --ink: #f3f6ee;
+  --muted: #aeb8c7;
+  --line: #303b4b;
+  --shadow: 0 18px 60px rgba(0, 0, 0, .42);
+  background: var(--paper);
+}
+
+body.dark .site-header,
+body.dark footer {
+  background: var(--paper);
+}
+
+body.dark .brand-mark {
+  background: #05080d;
+  color: var(--acid);
+  border: 1px solid var(--line);
+}
+
+body.dark .button.primary {
+  background: var(--acid);
+  border-color: var(--acid);
+  color: #111827;
+}
+
+body.dark .button.primary:hover {
+  box-shadow: 5px 5px 0 var(--violet);
+}
+
+body.dark .hero-visual {
+  background: #070b12;
+}
+
+body.dark .module-card:nth-child(2) {
+  background: #182518;
+  border-color: #5d872d;
+  color: var(--ink);
+}
+
+body.dark .module-card:nth-child(4) {
+  background: #201b38;
+  border-color: #6652a7;
+  color: var(--ink);
+}
+
+body.dark .lesson-index-button.active,
+body.dark .challenge-tab.active {
+  background: #232c3a;
+  border-color: var(--acid);
+  color: var(--ink);
+}
+
+body.dark .lesson-index-button.active .index-number,
+body.dark .challenge-tab.active span {
+  background: #0a1019;
+  color: var(--acid);
+}
+
+body.dark .troubleshooting {
+  background: #070c13;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+body.dark .quiz-section {
+  background: #111426;
+  border-top: 1px solid #322a5b;
+  border-bottom: 1px solid #322a5b;
+}
+
+body.dark .quiz-intro,
+body.dark .quiz-intro > p {
+  color: var(--ink);
+}
+
+body.dark .quiz-intro .eyebrow {
+  color: #b9aaff;
+}
+
+body.dark .answer.correct,
+body.dark .code-mcq-option.correct,
+body.dark .inline-options button.correct {
+  background: #17351e;
+  border-color: #579d47;
+  color: #d8ffd0;
+}
+
+body.dark .answer.wrong,
+body.dark .code-mcq-option.wrong,
+body.dark .inline-options button.wrong {
+  background: #3b191c;
+  border-color: #b55656;
+  color: #ffd4cf;
+}
+
+body.dark .plan-result {
+  background: #17351e;
+  border-color: #579d47;
+  color: #d8ffd0;
+}
+
+body.dark .difficulty {
+  background: #1b3521;
+  color: #caffb8;
+}
+
+body.dark .code-explanation,
+body.dark .inline-feedback,
+body.dark .quiz-explanation {
+  background: #0d131d;
+  color: var(--ink) !important;
+}
+
+body.dark .code-explanation p,
+body.dark .inline-feedback,
+body.dark .quiz-explanation {
+  color: var(--muted);
+}
+
+body.dark input::placeholder {
+  color: #7f8a99;
+}
+
+body.dark select option {
+  background: var(--card);
+  color: var(--ink);
+}
+
+body.dark .theme-toggle:focus-visible,
+body.dark button:focus-visible,
+body.dark a:focus-visible,
+body.dark input:focus-visible,
+body.dark select:focus-visible {
+  outline: 2px solid var(--acid);
+  outline-offset: 3px;
+}

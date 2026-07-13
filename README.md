@@ -24,6 +24,7 @@ No build step or dependencies are required.
 - Quick-start installation checklist and smart “continue learning” action
 - Study-planning form stored only in browser `localStorage`
 - Light and dark themes
+- Full-surface dark theme with dark lesson, quiz, form, feedback, and navigation states
 
 ## Sources
 

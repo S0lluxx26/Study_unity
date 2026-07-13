@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="mcq.css?v=1">
   <link rel="stylesheet" href="compact-learning.css?v=1">
   <link rel="stylesheet" href="course-flow.css?v=1">
+  <link rel="stylesheet" href="study-modes.css?v=1">
   <link rel="stylesheet" href="dark-mode.css?v=1">
 </head>
 <body>
@@ -116,7 +117,13 @@
     <section class="course-explorer section-shell reveal" id="course">
       <div class="course-heading">
         <div><p class="eyebrow">GUIDED CURRICULUM</p><h2>Learn, then answer right away.</h2></div>
-        <p>Each compact module keeps the introduction, practical steps, code, proof target, and an explained question together on one page.</p>
+        <div class="course-heading-tools">
+          <p>Study mode teaches the idea first. Practice mode removes the lesson and tests recall with MCQs only.</p>
+          <div class="mode-switch" role="group" aria-label="Lesson mode">
+            <button class="mode-button active" id="studyMode" type="button" aria-pressed="true">Study + MCQ</button>
+            <button class="mode-button" id="practiceMode" type="button" aria-pressed="false">MCQ practice</button>
+          </div>
+        </div>
       </div>
       <div class="course-layout">
         <aside class="course-index" aria-label="Lesson navigation" id="lessonIndex"></aside>
@@ -135,6 +142,7 @@
         <div class="challenge-panel reveal">
           <div class="challenge-top"><span id="challengeLabel">CHALLENGE 01 / 08</span><span class="difficulty">FOUNDATION</span></div>
           <h3 id="challengeTitle"></h3>
+          <div class="question-primer" id="challengeConcept"></div>
           <p id="challengePrompt"></p>
           <pre class="code-editor" id="challengeCode"></pre>
           <div class="code-mcq-options" id="codeMcqOptions" role="group" aria-label="Choose the missing code"></div>
@@ -148,12 +156,18 @@
       <div class="section-shell">
         <div class="quiz-intro reveal">
           <div><p class="eyebrow">KNOWLEDGE CHECK</p><h2>Test what you know.</h2></div>
-          <p>Twenty-four questions across the full game-development loop. Get instant explanations and a final skill profile.</p>
+          <div class="quiz-intro-tools"><p>Learn one small concept before each question, or switch to question-only practice when you want a true memory check.</p>
+            <div class="mode-switch quiz-mode-switch" role="group" aria-label="Quiz mode">
+              <button class="mode-button active" id="quizStudyMode" type="button" aria-pressed="true">Learn + question</button>
+              <button class="mode-button" id="quizPracticeMode" type="button" aria-pressed="false">Questions only</button>
+            </div>
+          </div>
         </div>
         <div class="quiz-card reveal" id="quizCard">
           <div class="quiz-status"><span id="quizCounter">QUESTION 01 / 24</span><span id="quizScore">0 XP</span></div>
           <div class="quiz-progress"><span id="quizProgress"></span></div>
           <p class="quiz-topic" id="quizTopic"></p>
+          <div class="quiz-primer" id="quizPrimer"></div>
           <h3 id="quizQuestion"></h3>
           <div class="answers" id="quizAnswers"></div>
           <div class="quiz-explanation" id="quizExplanation" role="status"></div>
@@ -216,7 +230,7 @@
   <footer>
     <div class="section-shell"><div class="brand"><span class="brand-mark">U</span><span>UNITY <b>LAUNCHPAD</b></span></div><p>An independent study guide. Unity is a trademark of Unity Technologies.</p><a href="#top">Back to top ↑</a></div>
   </footer>
-  <script src="app.js?v=6"></script>
-  <script src="learning.js?v=4"></script>
+  <script src="app.js?v=7"></script>
+  <script src="learning.js?v=5"></script>
 </body>
 </html>

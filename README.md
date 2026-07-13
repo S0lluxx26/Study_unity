@@ -21,6 +21,7 @@ No build step or dependencies are required.
 - Persistent learning dashboard with six guided module outlines and proof-of-learning checkpoints
 - Compact learn → code → explained MCQ flow inside every module
 - Clickable three-phase course flowchart with deep links to every module
+- Study and practice modes: visual concept flows before questions, or MCQ-only recall testing
 - Searchable 20-term Unity glossary and beginner troubleshooting guide
 - Quick-start installation checklist and smart “continue learning” action
 - Study-planning form stored only in browser `localStorage`

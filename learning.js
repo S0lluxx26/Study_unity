@@ -108,6 +108,7 @@ let activeLesson = Math.min(lessonModules.length - 1, lessonModules.findIndex((_
 const linkedModule = location.hash.match(/^#module-(0[1-6])$/);
 if (linkedModule) activeLesson = Number(linkedModule[1]) - 1;
 const setupState = new Set(JSON.parse(localStorage.getItem('unitySetupProgress') || '[]'));
+let lessonMode = localStorage.getItem('unityLessonMode') === 'practice' ? 'practice' : 'study';
 
 function saveLearningState() {
   localStorage.setItem('unityLessonProgress', JSON.stringify([...lessonState]));
@@ -139,22 +140,33 @@ function openLesson(index, scroll = true) {
   if (scroll) requestAnimationFrame(() => document.querySelector('#course').scrollIntoView({behavior:'smooth',block:'start'}));
 }
 
+function syncLessonMode() {
+  const study = lessonMode === 'study';
+  document.querySelector('#studyMode').classList.toggle('active', study);
+  document.querySelector('#studyMode').setAttribute('aria-pressed', String(study));
+  document.querySelector('#practiceMode').classList.toggle('active', !study);
+  document.querySelector('#practiceMode').setAttribute('aria-pressed', String(!study));
+}
+
 function renderCourse() {
   const index = document.querySelector('#lessonIndex');
   index.innerHTML = lessonModules.map((m, i) => `<button class="lesson-index-button ${i === activeLesson ? 'active' : ''}" data-lesson="${i}"><span class="index-number">${String(i + 1).padStart(2,'0')}</span><span><strong>${m.title}</strong><small>${m.time}</small></span><span class="complete-mark">${lessonState.has(i) ? '✓' : ''}</span></button>`).join('');
   index.querySelectorAll('button').forEach(button => button.onclick = () => openLesson(Number(button.dataset.lesson)));
   const m = lessonModules[activeLesson];
+  const checkMarkup = `<section class="inline-check"><span class="inline-check-kicker">${lessonMode === 'study' ? 'RECALL CHECK' : 'PRACTICE QUESTION'}</span><h4>${m.check.q}</h4><div class="inline-options">${m.check.choices.map((choice,i)=>`<button type="button" data-inline-choice="${i}" class="${lessonCheckState.has(activeLesson)&&i===m.check.answer?'correct':''}" ${lessonCheckState.has(activeLesson)?'disabled':''}><span>${String.fromCharCode(65+i)}</span>${choice}</button>`).join('')}</div><div class="inline-feedback ${lessonCheckState.has(activeLesson)?'show good':''}" role="status">${lessonCheckState.has(activeLesson)?`<b>Correct.</b> ${m.check.explanations[m.check.answer].replace(/^Correct\.\s*/,'')}`:''}</div></section>`;
+  const studyContent = `<div class="objective-strip">${m.objectives.map((o,i)=>`<div class="objective"><span>0${i+1}</span><p>${o}</p></div>`).join('')}</div>
+    <section class="concept-map" aria-label="Visual learning flow for ${m.title}"><div class="concept-map-head"><span>BIG PICTURE</span><small>Learn the sequence before testing recall</small></div><div class="concept-flow">${m.steps.map((step,i)=>`<div class="concept-node"><span>STEP 0${i+1}</span><b>${step[0]}</b></div>`).join('')}<div class="concept-node output"><span>RESULT</span><b>Prove it works</b></div></div></section>
+    <div class="lesson-content-grid">
+      <div class="lesson-study"><div class="compact-label">LEARN THE CONCEPT</div><div class="lesson-steps">${m.steps.map(s=>`<div class="lesson-step"><div><h4>${s[0]}</h4><p>${s[1]}</p></div></div>`).join('')}</div></div>
+      <div class="lesson-practice"><div class="compact-label">SEE IT IN CODE</div><pre class="mini-code"><code></code></pre><div class="checkpoint"><span>PROOF TARGET</span><p>${m.checkpoint}</p></div>${checkMarkup}</div>
+    </div>`;
+  const practiceContent = `<div class="lesson-mode-note"><span><b>Practice mode:</b> lesson notes are hidden so you can test memory honestly.</span><span class="practice-position">MODULE ${String(activeLesson + 1).padStart(2,'0')} / 06</span></div><div class="practice-view">${checkMarkup}</div>`;
   document.querySelector('#lessonView').innerHTML = `
     <div class="lesson-view-top"><div><span class="lesson-kicker">MODULE ${String(activeLesson + 1).padStart(2,'0')} · LEARNING OUTCOME</span><h3>${m.title}</h3><p class="lesson-outcome">${m.outcome}</p></div><span class="lesson-time">${m.time}</span></div>
-    <div class="objective-strip">${m.objectives.map((o,i)=>`<div class="objective"><span>0${i+1}</span><p>${o}</p></div>`).join('')}</div>
-    <div class="lesson-content-grid">
-      <div class="lesson-study"><div class="compact-label">LEARN & BUILD</div><div class="lesson-steps">${m.steps.map(s=>`<div class="lesson-step"><div><h4>${s[0]}</h4><p>${s[1]}</p></div></div>`).join('')}</div></div>
-      <div class="lesson-practice"><div class="compact-label">CODE & CHECK</div><pre class="mini-code"><code></code></pre><div class="checkpoint"><span>PROOF TARGET</span><p>${m.checkpoint}</p></div>
-        <section class="inline-check"><span class="inline-check-kicker">QUICK CHECK</span><h4>${m.check.q}</h4><div class="inline-options">${m.check.choices.map((choice,i)=>`<button type="button" data-inline-choice="${i}" class="${lessonCheckState.has(activeLesson)&&i===m.check.answer?'correct':''}" ${lessonCheckState.has(activeLesson)?'disabled':''}><span>${String.fromCharCode(65+i)}</span>${choice}</button>`).join('')}</div><div class="inline-feedback ${lessonCheckState.has(activeLesson)?'show good':''}" role="status">${lessonCheckState.has(activeLesson)?`<b>Correct.</b> ${m.check.explanations[m.check.answer].replace(/^Correct\.\s*/,'')}`:''}</div></section>
-      </div>
-    </div>
+    ${lessonMode === 'study' ? studyContent : practiceContent}
     <div class="lesson-footer"><a href="${m.source}" target="_blank" rel="noreferrer">Official Unity reference ↗</a><button class="complete-lesson ${lessonState.has(activeLesson)?'completed':''}" type="button" ${!lessonState.has(activeLesson)&&!lessonCheckState.has(activeLesson)?'disabled':''}>${lessonState.has(activeLesson)?'Completed ✓':lessonCheckState.has(activeLesson)?'Mark module complete':'Answer checkpoint to complete'}</button></div>`;
-  document.querySelector('.mini-code code').textContent = m.code;
+  const code = document.querySelector('.mini-code code');
+  if (code) code.textContent = m.code;
   document.querySelectorAll('.inline-options button').forEach(button => button.onclick = () => {
     const selected = Number(button.dataset.inlineChoice); const correct = selected === m.check.answer;
     document.querySelectorAll('.inline-options button').forEach((option,i) => { option.classList.toggle('wrong',i===selected&&!correct); option.classList.toggle('correct',i===m.check.answer&&correct); });
@@ -165,6 +177,7 @@ function renderCourse() {
     if (lessonState.has(activeLesson)) lessonState.delete(activeLesson); else lessonState.add(activeLesson);
     saveLearningState(); renderCourse(); renderDashboard();
   };
+  syncLessonMode();
 }
 
 function renderGlossary(query = '') {
@@ -186,5 +199,7 @@ document.querySelector('#glossarySearch').addEventListener('input', event => ren
 document.querySelectorAll('.module-card').forEach((card, i) => {
   card.onclick = event => { event.preventDefault(); openLesson(i); };
 });
+document.querySelector('#studyMode').onclick = () => { lessonMode = 'study'; localStorage.setItem('unityLessonMode', lessonMode); renderCourse(); };
+document.querySelector('#practiceMode').onclick = () => { lessonMode = 'practice'; localStorage.setItem('unityLessonMode', lessonMode); renderCourse(); };
 renderCourse(); renderDashboard(); renderGlossary();
 if (linkedModule) requestAnimationFrame(() => document.querySelector('#course').scrollIntoView({block:'start'}));

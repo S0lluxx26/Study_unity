@@ -17,7 +17,7 @@ No build step or dependencies are required.
 - Responsive, accessible single-page design
 - Unity 6 curriculum grounded in official Unity Learn and Manual sources
 - Interactive quiz with scoring and explanations
-- C# code challenges with hints and persistent completion state
+- Beginner-friendly C# multiple-choice questions with answer-specific explanations and persistent completion state
 - Persistent learning dashboard with six guided module outlines and proof-of-learning checkpoints
 - Searchable 20-term Unity glossary and beginner troubleshooting guide
 - Quick-start installation checklist and smart “continue learning” action

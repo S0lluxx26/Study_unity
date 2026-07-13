@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="responsive-fixes.css">
   <link rel="stylesheet" href="learning.css">
+  <link rel="stylesheet" href="mcq.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -160,8 +161,8 @@
     <section class="lab section-shell" id="lab">
       <div class="section-heading reveal">
         <p class="eyebrow">INTERACTIVE CODE LAB</p>
-        <h2>Complete the C#.</h2>
-        <p>Fill each missing token. Your answers are checked in the browser and never uploaded.</p>
+        <h2>Choose the right C#.</h2>
+        <p>Pick from four options, then read a clear explanation of why your answer works—or why it does not.</p>
       </div>
       <div class="lab-layout">
         <div class="challenge-list reveal" id="challengeList"></div>
@@ -170,9 +171,9 @@
           <h3 id="challengeTitle"></h3>
           <p id="challengePrompt"></p>
           <pre class="code-editor" id="challengeCode"></pre>
-          <div class="answer-row"><label for="codeAnswer">Missing code</label><input id="codeAnswer" type="text" autocomplete="off" spellcheck="false"><button id="checkCode" type="button">Run check</button></div>
-          <p class="feedback" id="codeFeedback" role="status"></p>
-          <div class="challenge-actions"><button id="showHint" class="text-button" type="button">Show hint</button><button id="nextChallenge" class="text-button" type="button">Next challenge →</button></div>
+          <div class="code-mcq-options" id="codeMcqOptions" role="group" aria-label="Choose the missing code"></div>
+          <div class="feedback code-explanation" id="codeFeedback" role="status" aria-live="polite"></div>
+          <div class="challenge-actions"><span class="retry-note">Choose one answer. You can retry if needed.</span><button id="nextChallenge" class="text-button" type="button">Next question →</button></div>
         </div>
       </div>
     </section>

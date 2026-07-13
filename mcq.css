@@ -1,0 +1,82 @@
+.code-mcq-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.code-mcq-option {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 13px;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s, transform .2s, background .2s;
+}
+
+.code-mcq-option:hover {
+  border-color: var(--violet);
+  transform: translateY(-1px);
+}
+
+.code-mcq-option > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 27px;
+  width: 27px;
+  height: 27px;
+  border-radius: 7px;
+  background: var(--card);
+  font: 500 10px DM Mono, monospace;
+}
+
+.code-mcq-option code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font: 500 12px DM Mono, monospace;
+}
+
+.code-mcq-option.correct {
+  border-color: #57b72c;
+  background: #eaffdf;
+  color: #173d08;
+}
+
+.code-mcq-option.wrong {
+  border-color: #e45b50;
+  background: #fff0ee;
+  color: #72180f;
+}
+
+.code-mcq-option:disabled { cursor: default; }
+.code-mcq-option:disabled:hover { transform: none; }
+.solved-token { color: var(--acid); font-weight: 700; }
+
+.code-explanation {
+  display: none;
+  margin-top: 14px !important;
+  padding: 15px 17px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink) !important;
+}
+
+.code-explanation.show { display: block; }
+.code-explanation.good { border-left: 4px solid #57b72c; }
+.code-explanation.bad { border-left: 4px solid #e45b50; }
+.code-explanation strong { font-size: 13px; }
+.code-explanation p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+.code-explanation .concept-summary { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.retry-note { color: var(--muted); font-size: 11px; }
+
+@media (max-width: 600px) {
+  .code-mcq-options { grid-template-columns: 1fr; }
+  .challenge-actions { align-items: center; gap: 15px; }
+}

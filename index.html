@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Unity Launchpad — a practical, interactive Unity 6 study guide with lessons, C# examples, quizzes, and code challenges.">
+  <meta name="theme-color" content="#111827">
+  <title>Unity Launchpad — Learn. Build. Ship.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="responsive-fixes.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="Unity Launchpad home">
+      <span class="brand-mark" aria-hidden="true">U</span>
+      <span>UNITY <b>LAUNCHPAD</b></span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#roadmap">Roadmap</a>
+      <a href="#lesson">Lessons</a>
+      <a href="#lab">Code lab</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span aria-hidden="true">◐</span></button>
+  </header>
+
+  <main id="main">
+    <section class="hero section-shell">
+      <div class="hero-copy reveal">
+        <p class="eyebrow"><span class="pulse"></span> UNITY 6 · BEGINNER TO BUILDER</p>
+        <h1>Make your first game.<br><span>Understand every step.</span></h1>
+        <p class="hero-lede">A focused, project-first path through the Unity Editor, C# scripting, physics, gameplay systems, UI, and publishing.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#roadmap">Start the roadmap <span>→</span></a>
+          <a class="button secondary" href="#quiz">Take a skill check</a>
+        </div>
+        <div class="hero-proof" aria-label="Course statistics">
+          <div><strong>06</strong><span>core modules</span></div>
+          <div><strong>32</strong><span>quiz + code tasks</span></div>
+          <div><strong>01</strong><span>playable game</span></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal" aria-label="Illustration of a Unity game scene">
+        <div class="visual-toolbar"><i></i><i></i><i></i><span>GAME VIEW / PLAYING</span></div>
+        <div class="scene">
+          <div class="scene-grid"></div>
+          <div class="sun"></div>
+          <div class="mountain back"></div>
+          <div class="mountain front"></div>
+          <div class="platform p1"></div><div class="platform p2"></div><div class="platform p3"></div>
+          <div class="player"><span></span></div>
+          <div class="coin c1">✦</div><div class="coin c2">✦</div><div class="coin c3">✦</div>
+          <div class="scene-hud"><span>◆ 3 / 8</span><span>LEVEL 01</span></div>
+        </div>
+        <div class="code-float"><span>void</span> FixedUpdate() {<br>&nbsp;&nbsp;body.AddForce(move);<br>}</div>
+      </div>
+    </section>
+
+    <section class="ticker" aria-label="Topics covered"><div>GAMEOBJECTS <i>✦</i> C# SCRIPTING <i>✦</i> PHYSICS <i>✦</i> INPUT SYSTEM <i>✦</i> UI TOOLKIT <i>✦</i> WEB BUILDS <i>✦</i> GAMEOBJECTS <i>✦</i> C# SCRIPTING</div></section>
+
+    <section class="section-shell intro reveal" id="roadmap">
+      <div>
+        <p class="eyebrow">YOUR BUILD PATH</p>
+        <h2>Six modules. One complete prototype.</h2>
+      </div>
+      <p>Follow the sequence or jump to what you need. Each module combines a mental model, an Editor task, production-ready C#, and a checkpoint.</p>
+    </section>
+
+    <section class="module-grid section-shell" id="moduleGrid" aria-label="Course modules"></section>
+
+    <section class="lesson-section" id="lesson">
+      <div class="section-shell lesson-shell">
+        <aside class="lesson-nav reveal">
+          <p class="eyebrow">CURRENT LESSON</p>
+          <h2>Build the player controller</h2>
+          <div class="lesson-meter"><span style="width: 42%"></span></div>
+          <p>Module 03 · 18 min</p>
+          <ol>
+            <li class="done">Scene setup</li>
+            <li class="active">Player movement</li>
+            <li>Camera follow</li>
+            <li>Collectibles</li>
+          </ol>
+        </aside>
+        <article class="lesson-content reveal">
+          <p class="eyebrow">CORE CONCEPT</p>
+          <h2>Separate input from physics</h2>
+          <p class="large-copy">Read player intent in <code>Update</code>, then apply forces in <code>FixedUpdate</code>. This keeps input responsive while physics runs on its stable timestep.</p>
+          <div class="concept-row">
+            <div><span>01</span><h3>Read</h3><p>Capture the 2D move action each rendered frame.</p></div>
+            <div><span>02</span><h3>Translate</h3><p>Map X/Y input onto the world's X/Z plane.</p></div>
+            <div><span>03</span><h3>Move</h3><p>Apply force through the Rigidbody in FixedUpdate.</p></div>
+          </div>
+          <div class="code-window">
+            <div class="code-head"><span>PlayerMover.cs</span><button class="copy-code" type="button">Copy code</button></div>
+            <pre><code><span class="kw">using</span> UnityEngine;
+<span class="kw">using</span> UnityEngine.InputSystem;
+
+<span class="kw">public class</span> <span class="type">PlayerMover</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="type">SerializeField</span>] <span class="kw">private float</span> moveForce = <span class="num">18f</span>;
+    <span class="kw">private</span> <span class="type">Rigidbody</span> body;
+    <span class="kw">private</span> <span class="type">Vector2</span> input;
+
+    <span class="kw">private void</span> <span class="fn">Awake</span>() => body = GetComponent&lt;<span class="type">Rigidbody</span>&gt;();
+
+    <span class="kw">public void</span> <span class="fn">OnMove</span>(<span class="type">InputAction.CallbackContext</span> context)
+        => input = context.ReadValue&lt;<span class="type">Vector2</span>&gt;();
+
+    <span class="kw">private void</span> <span class="fn">FixedUpdate</span>()
+    {
+        <span class="type">Vector3</span> force = <span class="kw">new</span>(input.x, <span class="num">0f</span>, input.y);
+        body.AddForce(force * moveForce, ForceMode.Acceleration);
+    }
+}</code></pre>
+          </div>
+          <div class="callout"><b>Editor checklist</b><span>Add a Rigidbody and PlayerInput to the player. Set PlayerInput behavior to “Send Messages,” create a Move action, then attach this script.</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="lab section-shell" id="lab">
+      <div class="section-heading reveal">
+        <p class="eyebrow">INTERACTIVE CODE LAB</p>
+        <h2>Complete the C#.</h2>
+        <p>Fill each missing token. Your answers are checked in the browser and never uploaded.</p>
+      </div>
+      <div class="lab-layout">
+        <div class="challenge-list reveal" id="challengeList"></div>
+        <div class="challenge-panel reveal">
+          <div class="challenge-top"><span id="challengeLabel">CHALLENGE 01 / 08</span><span class="difficulty">FOUNDATION</span></div>
+          <h3 id="challengeTitle"></h3>
+          <p id="challengePrompt"></p>
+          <pre class="code-editor" id="challengeCode"></pre>
+          <div class="answer-row"><label for="codeAnswer">Missing code</label><input id="codeAnswer" type="text" autocomplete="off" spellcheck="false"><button id="checkCode" type="button">Run check</button></div>
+          <p class="feedback" id="codeFeedback" role="status"></p>
+          <div class="challenge-actions"><button id="showHint" class="text-button" type="button">Show hint</button><button id="nextChallenge" class="text-button" type="button">Next challenge →</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quiz-section" id="quiz">
+      <div class="section-shell">
+        <div class="quiz-intro reveal">
+          <div><p class="eyebrow">KNOWLEDGE CHECK</p><h2>Test what you know.</h2></div>
+          <p>Twenty-four questions across the full game-development loop. Get instant explanations and a final skill profile.</p>
+        </div>
+        <div class="quiz-card reveal" id="quizCard">
+          <div class="quiz-status"><span id="quizCounter">QUESTION 01 / 24</span><span id="quizScore">0 XP</span></div>
+          <div class="quiz-progress"><span id="quizProgress"></span></div>
+          <p class="quiz-topic" id="quizTopic"></p>
+          <h3 id="quizQuestion"></h3>
+          <div class="answers" id="quizAnswers"></div>
+          <div class="quiz-explanation" id="quizExplanation" role="status"></div>
+          <button class="button primary quiz-next" id="quizNext" type="button" disabled>Check answer</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="planner section-shell reveal" id="planner">
+      <div class="planner-copy">
+        <p class="eyebrow">MAKE IT YOURS</p>
+        <h2>Build your study sprint.</h2>
+        <p>Turn “learn Unity” into a concrete weekly plan. This form saves only to your device.</p>
+        <ul><li>Choose a realistic weekly rhythm</li><li>Commit to a small game idea</li><li>Track the date you plan to ship</li></ul>
+      </div>
+      <form class="plan-form" id="planForm">
+        <div class="field"><label for="studentName">Your name</label><input id="studentName" name="studentName" required placeholder="Mai"></div>
+        <div class="field"><label for="experience">Current level</label><select id="experience" name="experience"><option>Complete beginner</option><option>Know some C#</option><option>Built a small prototype</option></select></div>
+        <div class="field full"><label for="gameIdea">Game idea</label><input id="gameIdea" name="gameIdea" required placeholder="A tiny 3D collect-and-escape game"></div>
+        <div class="field"><label for="hours">Hours per week</label><input id="hours" name="hours" type="number" min="1" max="40" value="5" required></div>
+        <div class="field"><label for="shipDate">Target ship date</label><input id="shipDate" name="shipDate" type="date" required></div>
+        <button class="button primary full" type="submit">Create my study plan →</button>
+        <div class="plan-result full" id="planResult" role="status"></div>
+      </form>
+    </section>
+
+    <section class="sources section-shell reveal">
+      <div><p class="eyebrow">KEEP LEARNING</p><h2>Primary sources, not shortcuts.</h2></div>
+      <div class="source-links">
+        <a href="https://learn.unity.com/pathway/unity-essentials?version=6.0" target="_blank" rel="noreferrer"><span>Unity Learn</span><b>Unity Essentials Pathway ↗</b></a>
+        <a href="https://docs.unity3d.com/6000.0/Documentation/Manual/GameObjects.html" target="_blank" rel="noreferrer"><span>Unity 6 Manual</span><b>GameObjects & Components ↗</b></a>
+        <a href="https://docs.unity3d.com/Packages/com.unity.inputsystem@1.17/manual/index.html" target="_blank" rel="noreferrer"><span>Package docs</span><b>Input System 1.17 ↗</b></a>
+        <a href="https://docs.unity3d.com/6000.0/Documentation/Manual/web-build-settings.html" target="_blank" rel="noreferrer"><span>Unity 6 Manual</span><b>Web build settings ↗</b></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="section-shell"><div class="brand"><span class="brand-mark">U</span><span>UNITY <b>LAUNCHPAD</b></span></div><p>An independent study guide. Unity is a trademark of Unity Technologies.</p><a href="#top">Back to top ↑</a></div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

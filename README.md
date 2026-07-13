@@ -19,6 +19,7 @@ No build step or dependencies are required.
 - Interactive quiz with scoring and explanations
 - Beginner-friendly C# multiple-choice questions with answer-specific explanations and persistent completion state
 - Persistent learning dashboard with six guided module outlines and proof-of-learning checkpoints
+- Compact learn → code → explained MCQ flow inside every module
 - Searchable 20-term Unity glossary and beginner troubleshooting guide
 - Quick-start installation checklist and smart “continue learning” action
 - Study-planning form stored only in browser `localStorage`

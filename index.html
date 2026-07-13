@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="responsive-fixes.css">
   <link rel="stylesheet" href="learning.css">
   <link rel="stylesheet" href="mcq.css?v=1">
+  <link rel="stylesheet" href="compact-learning.css?v=1">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -98,63 +99,12 @@
 
     <section class="course-explorer section-shell reveal" id="course">
       <div class="course-heading">
-        <div><p class="eyebrow">GUIDED CURRICULUM</p><h2>Learn in small, buildable steps.</h2></div>
-        <p>Each module tells you what to understand, what to do in Unity, and how to prove it works. Your completion state stays on this device.</p>
+        <div><p class="eyebrow">GUIDED CURRICULUM</p><h2>Learn, then answer right away.</h2></div>
+        <p>Each compact module keeps the introduction, practical steps, code, proof target, and an explained question together on one page.</p>
       </div>
       <div class="course-layout">
         <aside class="course-index" aria-label="Lesson navigation" id="lessonIndex"></aside>
         <article class="lesson-view" id="lessonView" aria-live="polite"></article>
-      </div>
-    </section>
-
-    <section class="lesson-section" id="lesson">
-      <div class="section-shell lesson-shell">
-        <aside class="lesson-nav reveal">
-          <p class="eyebrow">CURRENT LESSON</p>
-          <h2>Build the player controller</h2>
-          <div class="lesson-meter"><span style="width: 42%"></span></div>
-          <p>Module 03 · 18 min</p>
-          <ol>
-            <li class="done">Scene setup</li>
-            <li class="active">Player movement</li>
-            <li>Camera follow</li>
-            <li>Collectibles</li>
-          </ol>
-        </aside>
-        <article class="lesson-content reveal">
-          <p class="eyebrow">CORE CONCEPT</p>
-          <h2>Separate input from physics</h2>
-          <p class="large-copy">Read player intent in <code>Update</code>, then apply forces in <code>FixedUpdate</code>. This keeps input responsive while physics runs on its stable timestep.</p>
-          <div class="concept-row">
-            <div><span>01</span><h3>Read</h3><p>Capture the 2D move action each rendered frame.</p></div>
-            <div><span>02</span><h3>Translate</h3><p>Map X/Y input onto the world's X/Z plane.</p></div>
-            <div><span>03</span><h3>Move</h3><p>Apply force through the Rigidbody in FixedUpdate.</p></div>
-          </div>
-          <div class="code-window">
-            <div class="code-head"><span>PlayerMover.cs</span><button class="copy-code" type="button">Copy code</button></div>
-            <pre><code><span class="kw">using</span> UnityEngine;
-<span class="kw">using</span> UnityEngine.InputSystem;
-
-<span class="kw">public class</span> <span class="type">PlayerMover</span> : <span class="type">MonoBehaviour</span>
-{
-    [<span class="type">SerializeField</span>] <span class="kw">private float</span> moveForce = <span class="num">18f</span>;
-    <span class="kw">private</span> <span class="type">Rigidbody</span> body;
-    <span class="kw">private</span> <span class="type">Vector2</span> input;
-
-    <span class="kw">private void</span> <span class="fn">Awake</span>() => body = GetComponent&lt;<span class="type">Rigidbody</span>&gt;();
-
-    <span class="kw">public void</span> <span class="fn">OnMove</span>(<span class="type">InputAction.CallbackContext</span> context)
-        => input = context.ReadValue&lt;<span class="type">Vector2</span>&gt;();
-
-    <span class="kw">private void</span> <span class="fn">FixedUpdate</span>()
-    {
-        <span class="type">Vector3</span> force = <span class="kw">new</span>(input.x, <span class="num">0f</span>, input.y);
-        body.AddForce(force * moveForce, ForceMode.Acceleration);
-    }
-}</code></pre>
-          </div>
-          <div class="callout"><b>Editor checklist</b><span>Add a Rigidbody and PlayerInput to the player. Set PlayerInput behavior to “Send Messages,” create a Move action, then attach this script.</span></div>
-        </article>
       </div>
     </section>
 
@@ -250,7 +200,7 @@
   <footer>
     <div class="section-shell"><div class="brand"><span class="brand-mark">U</span><span>UNITY <b>LAUNCHPAD</b></span></div><p>An independent study guide. Unity is a trademark of Unity Technologies.</p><a href="#top">Back to top ↑</a></div>
   </footer>
-  <script src="app.js?v=3"></script>
-  <script src="learning.js"></script>
+  <script src="app.js?v=4"></script>
+  <script src="learning.js?v=3"></script>
 </body>
 </html>

@@ -2,6 +2,11 @@ const lessonModules = [
   {
     title: 'Editor & scene thinking', time: '45 min', outcome: 'Navigate Unity confidently and build a clean scene from GameObjects and components.',
     objectives: ['Name the five core Editor windows', 'Explain GameObject + Component', 'Save and organize a scene'],
+    relation: {
+      summary: 'A Scene contains GameObjects. Every GameObject has a Transform, gains behavior from Components, and can be saved as a reusable Prefab.',
+      nodes: [['scene','Scene',105,55],['object','GameObject',375,145,'core'],['transform','Transform',105,240],['components','Components',650,55],['prefab','Prefab asset',650,240]],
+      edges: [['scene','object','contains'],['object','transform','always has'],['components','object','attach to'],['prefab','object','creates instances']]
+    },
     steps: [
       ['Orient the Editor', 'Locate Hierarchy, Scene, Game, Inspector, and Project. Select the Main Camera and watch the Inspector change.'],
       ['Build a tiny room', 'Create a Plane and three Cubes. Use Transform tools, meaningful names, and an Empty GameObject named Environment.'],
@@ -15,6 +20,11 @@ const lessonModules = [
   {
     title: 'C# for gameplay', time: '75 min', outcome: 'Write a MonoBehaviour that exposes tuning values and changes a GameObject safely.',
     objectives: ['Read fields and methods', 'Use the lifecycle correctly', 'Cache component references'],
+    relation: {
+      summary: 'A MonoBehaviour is a Component attached to a GameObject. Unity calls its lifecycle methods, while serialized fields connect code to Inspector tuning.',
+      nodes: [['gameobject','GameObject',100,55],['script','MonoBehaviour',375,145,'core'],['inspector','Inspector',650,55],['awake','Awake',100,240],['update','Update',650,240]],
+      edges: [['gameobject','script','owns component'],['inspector','script','tunes fields'],['awake','script','initializes'],['script','update','runs each frame'],['awake','update','before']]
+    },
     steps: [
       ['Create the script', 'Create Rotator.cs in Assets/Scripts. Match the filename to the class name and attach it to a visible object.'],
       ['Expose one tuning value', 'Keep the field private and use SerializeField so speed is editable in the Inspector.'],
@@ -28,6 +38,11 @@ const lessonModules = [
   {
     title: 'Input & movement', time: '60 min', outcome: 'Move a Rigidbody player with device-independent Input Actions.',
     objectives: ['Create a Move action', 'Separate input from physics', 'Tune acceleration and drag'],
+    relation: {
+      summary: 'Device input becomes an Input Action value. Your script stores that intent, then FixedUpdate applies it to the Rigidbody during physics simulation.',
+      nodes: [['device','Device',90,145],['action','Input Action',245,55],['vector','Vector2 intent',375,145,'core'],['fixed','FixedUpdate',505,240],['body','Rigidbody',670,145]],
+      edges: [['device','action','binding'],['action','vector','reads value'],['vector','fixed','stored intent'],['fixed','body','AddForce']]
+    },
     steps: [
       ['Create the input contract', 'Install Input System, create an Input Actions asset, add a Player map and a Vector2 Move action.'],
       ['Configure the player', 'Add Rigidbody, Collider, and PlayerInput. Freeze unwanted rotation and reference the action asset.'],
@@ -41,6 +56,11 @@ const lessonModules = [
   {
     title: 'Physics & interactions', time: '70 min', outcome: 'Create collectibles, hazards, scoring, and a complete win condition.',
     objectives: ['Choose collision vs trigger', 'Use tags safely', 'Build one game loop'],
+    relation: {
+      summary: 'A player Collider overlaps a trigger, OnTriggerEnter identifies the player, and the GameManager turns that event into score, feedback, and a win state.',
+      nodes: [['player','Player Collider',90,145],['trigger','Trigger',245,55],['event','OnTriggerEnter',375,145,'core'],['manager','GameManager',525,55],['result','Score / win',670,145]],
+      edges: [['player','trigger','overlaps'],['trigger','event','raises'],['event','manager','notifies'],['manager','result','updates']]
+    },
     steps: [
       ['Create a collectible Prefab', 'Give a bright object a trigger Collider, tag it Collectible, and turn it into a Prefab.'],
       ['Detect collection', 'Use OnTriggerEnter, CompareTag, and Destroy. Keep score in a dedicated GameManager.'],
@@ -54,6 +74,11 @@ const lessonModules = [
   {
     title: 'UI, audio & polish', time: '60 min', outcome: 'Make game state readable and player actions satisfying.',
     objectives: ['Build responsive HUD', 'Add layered feedback', 'Control audio cleanly'],
+    relation: {
+      summary: 'Gameplay changes hidden state. UI, audio, particles, and camera response translate that state into feedback the player can understand.',
+      nodes: [['event','Player action',90,145],['state','Game state',275,145,'core'],['ui','Canvas / HUD',500,45],['audio','AudioSource',670,145],['fx','Particles / camera',500,245]],
+      edges: [['event','state','changes'],['state','ui','displays'],['state','audio','plays'],['state','fx','triggers']]
+    },
     steps: [
       ['Create the HUD', 'Use a Canvas with score text, a short objective, and a hidden win panel. Check multiple Game view aspect ratios.'],
       ['Add feedback', 'Play a particle burst and sound at the collectible position before removing the collectible.'],
@@ -67,6 +92,11 @@ const lessonModules = [
   {
     title: 'Profile, build & ship', time: '50 min', outcome: 'Measure the game, create a Web build, and publish a tested release.',
     objectives: ['Profile before optimizing', 'Configure a Build Profile', 'Run a release checklist'],
+    relation: {
+      summary: 'Profile the real experience, fix measured bottlenecks, configure scenes and platform in a Build Profile, then test the Web release.',
+      nodes: [['game','Playable game',90,145],['profiler','Profiler',245,55],['fix','Measured fix',375,145,'core'],['profile','Build Profile',520,240],['web','Tested Web build',680,145]],
+      edges: [['game','profiler','measure'],['profiler','fix','find bottleneck'],['fix','game','verify'],['game','profile','configure'],['profile','web','build & test']]
+    },
     steps: [
       ['Measure the target experience', 'Open Window > Analysis > Profiler. Check CPU, rendering, and memory while playing a representative scene.'],
       ['Create a Web Build Profile', 'Add the correct scenes in order, switch to Web, use a release build, and run through a local server.'],
@@ -148,6 +178,23 @@ function syncLessonMode() {
   document.querySelector('#practiceMode').setAttribute('aria-pressed', String(!study));
 }
 
+function renderRelationDiagram(module, moduleIndex) {
+  const nodeMap = Object.fromEntries(module.relation.nodes.map(node => [node[0], node]));
+  const edgeMarkup = module.relation.edges.map(([from, to, label]) => {
+    const a = nodeMap[from], b = nodeMap[to];
+    const dx = b[2] - a[2], dy = b[3] - a[3];
+    const startScale = Math.min(67 / Math.max(Math.abs(dx), .01), 23 / Math.max(Math.abs(dy), .01));
+    const endScale = Math.min(67 / Math.max(Math.abs(dx), .01), 23 / Math.max(Math.abs(dy), .01));
+    const x1 = a[2] + dx * startScale, y1 = a[3] + dy * startScale;
+    const x2 = b[2] - dx * endScale, y2 = b[3] - dy * endScale;
+    const lx = (x1 + x2) / 2, ly = (y1 + y2) / 2 - 7;
+    return `<g class="relation-edge"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-end="url(#relation-arrow-${moduleIndex})"></line><text x="${lx}" y="${ly}">${label}</text></g>`;
+  }).join('');
+  const nodeMarkup = module.relation.nodes.map(([id, label, x, y, kind]) => `<g class="relation-node ${kind === 'core' ? 'core' : ''}" data-node="${id}"><rect x="${x - 67}" y="${y - 23}" width="134" height="46" rx="10"></rect><text x="${x}" y="${y + 4}">${label}</text></g>`).join('');
+  const listMarkup = module.relation.edges.map(([from, to, label]) => `<li><b>${nodeMap[from][1]}</b><span>${label} →</span><b>${nodeMap[to][1]}</b></li>`).join('');
+  return `<section class="relation-map" aria-labelledby="relation-title-${moduleIndex}"><div class="relation-map-head"><div><span>CONCEPT RELATIONSHIP GRAPH</span><h4 id="relation-title-${moduleIndex}">How the pieces connect</h4></div><small>Arrows show dependency, ownership, or event flow.</small></div><p>${module.relation.summary}</p><svg class="relation-svg" viewBox="0 0 760 300" role="img" aria-labelledby="relation-svg-title-${moduleIndex} relation-svg-desc-${moduleIndex}"><title id="relation-svg-title-${moduleIndex}">${module.title} relationship graph</title><desc id="relation-svg-desc-${moduleIndex}">${module.relation.summary}</desc><defs><marker id="relation-arrow-${moduleIndex}" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z"></path></marker></defs>${edgeMarkup}${nodeMarkup}</svg><ul class="relation-list" aria-label="Relationship list">${listMarkup}</ul></section>`;
+}
+
 function renderCourse() {
   const index = document.querySelector('#lessonIndex');
   index.innerHTML = lessonModules.map((m, i) => `<button class="lesson-index-button ${i === activeLesson ? 'active' : ''}" data-lesson="${i}"><span class="index-number">${String(i + 1).padStart(2,'0')}</span><span><strong>${m.title}</strong><small>${m.time}</small></span><span class="complete-mark">${lessonState.has(i) ? '✓' : ''}</span></button>`).join('');
@@ -155,6 +202,7 @@ function renderCourse() {
   const m = lessonModules[activeLesson];
   const checkMarkup = `<section class="inline-check"><span class="inline-check-kicker">${lessonMode === 'study' ? 'RECALL CHECK' : 'PRACTICE QUESTION'}</span><h4>${m.check.q}</h4><div class="inline-options">${m.check.choices.map((choice,i)=>`<button type="button" data-inline-choice="${i}" class="${lessonCheckState.has(activeLesson)&&i===m.check.answer?'correct':''}" ${lessonCheckState.has(activeLesson)?'disabled':''}><span>${String.fromCharCode(65+i)}</span>${choice}</button>`).join('')}</div><div class="inline-feedback ${lessonCheckState.has(activeLesson)?'show good':''}" role="status">${lessonCheckState.has(activeLesson)?`<b>Correct.</b> ${m.check.explanations[m.check.answer].replace(/^Correct\.\s*/,'')}`:''}</div></section>`;
   const studyContent = `<div class="objective-strip">${m.objectives.map((o,i)=>`<div class="objective"><span>0${i+1}</span><p>${o}</p></div>`).join('')}</div>
+    ${renderRelationDiagram(m, activeLesson)}
     <section class="concept-map" aria-label="Visual learning flow for ${m.title}"><div class="concept-map-head"><span>BIG PICTURE</span><small>Learn the sequence before testing recall</small></div><div class="concept-flow">${m.steps.map((step,i)=>`<div class="concept-node"><span>STEP 0${i+1}</span><b>${step[0]}</b></div>`).join('')}<div class="concept-node output"><span>RESULT</span><b>Prove it works</b></div></div></section>
     <div class="lesson-content-grid">
       <div class="lesson-study"><div class="compact-label">LEARN THE CONCEPT</div><div class="lesson-steps">${m.steps.map(s=>`<div class="lesson-step"><div><h4>${s[0]}</h4><p>${s[1]}</p></div></div>`).join('')}</div></div>

@@ -132,18 +132,23 @@ const glossaryTerms = [
   ['Profiler','Unity tooling that measures CPU, GPU, rendering, memory, audio, and other runtime costs.']
 ];
 
-const lessonState = new Set(JSON.parse(localStorage.getItem('unityLessonProgress') || '[]'));
-const lessonCheckState = new Set(JSON.parse(localStorage.getItem('unityLessonChecks') || '[]'));
+function loadSavedIndexSet(key, maximum) {
+  const value = unityStorage.getJSON(key, []);
+  return new Set(Array.isArray(value) ? value.filter(index => Number.isInteger(index) && index >= 0 && index < maximum) : []);
+}
+
+const lessonState = loadSavedIndexSet('unityLessonProgress', lessonModules.length);
+const lessonCheckState = loadSavedIndexSet('unityLessonChecks', lessonModules.length);
 let activeLesson = Math.min(lessonModules.length - 1, lessonModules.findIndex((_, i) => !lessonState.has(i)) === -1 ? lessonModules.length - 1 : lessonModules.findIndex((_, i) => !lessonState.has(i)));
 const linkedModule = location.hash.match(/^#module-(0[1-6])$/);
 if (linkedModule) activeLesson = Number(linkedModule[1]) - 1;
-const setupState = new Set(JSON.parse(localStorage.getItem('unitySetupProgress') || '[]'));
-let lessonMode = localStorage.getItem('unityLessonMode') === 'practice' ? 'practice' : 'study';
+const setupState = new Set((() => { const value = unityStorage.getJSON('unitySetupProgress', []); return Array.isArray(value) ? value.filter(item => ['hub','editor','ide','project'].includes(item)) : []; })());
+let lessonMode = unityStorage.get('unityLessonMode') === 'practice' ? 'practice' : 'study';
 
 function saveLearningState() {
-  localStorage.setItem('unityLessonProgress', JSON.stringify([...lessonState]));
-  localStorage.setItem('unityLessonChecks', JSON.stringify([...lessonCheckState]));
-  localStorage.setItem('unitySetupProgress', JSON.stringify([...setupState]));
+  unityStorage.setJSON('unityLessonProgress', [...lessonState]);
+  unityStorage.setJSON('unityLessonChecks', [...lessonCheckState]);
+  unityStorage.setJSON('unitySetupProgress', [...setupState]);
 }
 
 function renderDashboard() {
@@ -151,9 +156,11 @@ function renderDashboard() {
   const percent = Math.round(completed / lessonModules.length * 100);
   const ring = document.querySelector('#progressRing');
   ring.style.setProperty('--progress', `${percent * 3.6}deg`);
+  ring.setAttribute('aria-valuenow', String(percent));
   document.querySelector('#progressPercent').textContent = `${percent}%`;
   document.querySelector('#progressMessage').textContent = completed === 6 ? 'Prototype path complete.' : completed ? `${completed} of 6 modules complete.` : 'Ready when you are.';
-  document.querySelector('#progressDetail').textContent = completed === 6 ? 'Retake the quiz, refine your game, and ship a new build.' : `About ${lessonModules.slice(completed).reduce((sum,m)=>sum+parseInt(m.time),0)} minutes remain in the core path.`;
+  const remainingMinutes = lessonModules.reduce((sum, module, index) => sum + (lessonState.has(index) ? 0 : parseInt(module.time, 10)), 0);
+  document.querySelector('#progressDetail').textContent = completed === 6 ? 'Retake the quiz, refine your game, and ship a new build.' : `About ${remainingMinutes} minutes remain in the core path.`;
   const next = lessonModules.findIndex((_, i) => !lessonState.has(i));
   const nextIndex = next === -1 ? 5 : next;
   document.querySelector('#continueTitle').textContent = next === -1 ? 'Build your second prototype' : lessonModules[nextIndex].title;
@@ -197,7 +204,7 @@ function renderRelationDiagram(module, moduleIndex) {
 
 function renderCourse() {
   const index = document.querySelector('#lessonIndex');
-  index.innerHTML = lessonModules.map((m, i) => `<button class="lesson-index-button ${i === activeLesson ? 'active' : ''}" data-lesson="${i}"><span class="index-number">${String(i + 1).padStart(2,'0')}</span><span><strong>${m.title}</strong><small>${m.time}</small></span><span class="complete-mark">${lessonState.has(i) ? '✓' : ''}</span></button>`).join('');
+  index.innerHTML = lessonModules.map((m, i) => `<button class="lesson-index-button ${i === activeLesson ? 'active' : ''}" data-lesson="${i}" aria-current="${i === activeLesson ? 'step' : 'false'}"><span class="index-number">${String(i + 1).padStart(2,'0')}</span><span><strong>${m.title}</strong><small>${m.time}</small></span><span class="complete-mark">${lessonState.has(i) ? '✓' : ''}</span></button>`).join('');
   index.querySelectorAll('button').forEach(button => button.onclick = () => openLesson(Number(button.dataset.lesson)));
   const m = lessonModules[activeLesson];
   const checkMarkup = `<section class="inline-check"><span class="inline-check-kicker">${lessonMode === 'study' ? 'RECALL CHECK' : 'PRACTICE QUESTION'}</span><h4>${m.check.q}</h4><div class="inline-options">${m.check.choices.map((choice,i)=>`<button type="button" data-inline-choice="${i}" class="${lessonCheckState.has(activeLesson)&&i===m.check.answer?'correct':''}" ${lessonCheckState.has(activeLesson)?'disabled':''}><span>${String.fromCharCode(65+i)}</span>${choice}</button>`).join('')}</div><div class="inline-feedback ${lessonCheckState.has(activeLesson)?'show good':''}" role="status">${lessonCheckState.has(activeLesson)?`<b>Correct.</b> ${m.check.explanations[m.check.answer].replace(/^Correct\.\s*/,'')}`:''}</div></section>`;
@@ -247,7 +254,7 @@ document.querySelector('#glossarySearch').addEventListener('input', event => ren
 document.querySelectorAll('.module-card').forEach((card, i) => {
   card.onclick = event => { event.preventDefault(); openLesson(i); };
 });
-document.querySelector('#studyMode').onclick = () => { lessonMode = 'study'; localStorage.setItem('unityLessonMode', lessonMode); renderCourse(); };
-document.querySelector('#practiceMode').onclick = () => { lessonMode = 'practice'; localStorage.setItem('unityLessonMode', lessonMode); renderCourse(); };
+document.querySelector('#studyMode').onclick = () => { lessonMode = 'study'; unityStorage.set('unityLessonMode', lessonMode); renderCourse(); };
+document.querySelector('#practiceMode').onclick = () => { lessonMode = 'practice'; unityStorage.set('unityLessonMode', lessonMode); renderCourse(); };
 renderCourse(); renderDashboard(); renderGlossary();
 if (linkedModule) requestAnimationFrame(() => document.querySelector('#course').scrollIntoView({block:'start'}));

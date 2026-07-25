@@ -15,12 +15,12 @@
   <link rel="stylesheet" href="learning.css">
   <link rel="stylesheet" href="mcq.css?v=1">
   <link rel="stylesheet" href="compact-learning.css?v=1">
-  <link rel="stylesheet" href="course-flow.css?v=1">
+  <link rel="stylesheet" href="course-flow.css?v=2">
   <link rel="stylesheet" href="study-modes.css?v=2">
   <link rel="stylesheet" href="dark-mode.css?v=1">
 </head>
 <body>
-  <script>if(localStorage.getItem('unityTheme')==='dark')document.body.classList.add('dark');</script>
+  <script>try{if(localStorage.getItem('unityTheme')==='dark')document.body.classList.add('dark')}catch{}</script>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header" id="top">
     <a class="brand" href="#top" aria-label="Unity Launchpad home">
@@ -73,7 +73,7 @@
 
     <section class="learning-dashboard section-shell reveal" id="dashboard">
       <div class="dash-progress-card">
-        <div class="progress-ring" id="progressRing" aria-label="Course progress"><span id="progressPercent">0%</span></div>
+        <div class="progress-ring" id="progressRing" role="progressbar" aria-label="Course progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressPercent">0%</span></div>
         <div><p class="eyebrow">YOUR PROGRESS</p><h2 id="progressMessage">Ready when you are.</h2><p id="progressDetail">Complete setup, then begin Module 01.</p></div>
       </div>
       <div class="continue-card">
@@ -165,7 +165,7 @@
         </div>
         <div class="quiz-card reveal" id="quizCard">
           <div class="quiz-status"><span id="quizCounter">QUESTION 01 / 24</span><span id="quizScore">0 XP</span></div>
-          <div class="quiz-progress"><span id="quizProgress"></span></div>
+          <div class="quiz-progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="24" aria-valuenow="1"><span id="quizProgress"></span></div>
           <p class="quiz-topic" id="quizTopic"></p>
           <div class="quiz-primer" id="quizPrimer"></div>
           <h3 id="quizQuestion"></h3>
@@ -197,7 +197,7 @@
     <section class="reference-hub section-shell reveal" id="glossary">
       <div class="reference-heading">
         <div><p class="eyebrow">REFERENCE DESK</p><h2>Look it up. Get unstuck.</h2></div>
-        <label class="search-box" for="glossarySearch"><span>⌕</span><input id="glossarySearch" type="search" placeholder="Search Rigidbody, Prefab, Update…" autocomplete="off"></label>
+        <label class="search-box" for="glossarySearch"><span aria-hidden="true">⌕</span><input id="glossarySearch" type="search" aria-label="Search Unity glossary" placeholder="Search Rigidbody, Prefab, Update…" autocomplete="off"></label>
       </div>
       <div class="reference-layout">
         <div>
@@ -230,7 +230,7 @@
   <footer>
     <div class="section-shell"><div class="brand"><span class="brand-mark">U</span><span>UNITY <b>LAUNCHPAD</b></span></div><p>An independent study guide. Unity is a trademark of Unity Technologies.</p><a href="#top">Back to top ↑</a></div>
   </footer>
-  <script src="app.js?v=7"></script>
-  <script src="learning.js?v=6"></script>
+  <script src="app.js?v=8"></script>
+  <script src="learning.js?v=7"></script>
 </body>
 </html>

@@ -23,6 +23,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Validate static site
+        run: |
+          node --check app.js
+          node --check learning.js
+          test -f index.html
+          test -f styles.css
+          test -f course-flow.css
+          test -f study-modes.css
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload site

@@ -111,6 +111,7 @@
 }
 
 .course-map .module-card:last-child::after { display: none; }
+.course-map .module-card.is-complete::before { content: "✓"; position: absolute; z-index: 4; right: 14px; top: 43px; display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; background: var(--acid); color: #111827; font: 700 11px DM Mono, monospace; }
 .course-map .module-card.is-active { border-color: var(--violet); box-shadow: 0 0 0 2px color-mix(in srgb,var(--violet) 25%,transparent); transform: translateY(-4px); }
 .course-map .module-card:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
 .module-phase { display: none; color: var(--violet); font: 500 8px DM Mono, monospace; letter-spacing: .1em; }
